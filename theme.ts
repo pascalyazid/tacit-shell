@@ -91,6 +91,47 @@ export async function setTheme(wallpaperPath: string) {
     const scss = `${agsDir}/style.scss`
     const css = `/tmp/ags-compiled-style.css`
 
+    // Create a symlink to the pywal colors file so SCSS can always find it
+    // even if the user moves their dotfiles, and provide a fallback if Pywal hasn't run yet.
+    try {
+      const walCache = `${HOME}/.cache/wal/colors.scss`
+      const walLocal = `${agsDir}/colors.scss`
+
+      // Check if pywal cache exists, if not create a fallback
+      try {
+        await execAsync(`cat ${walCache}`)
+      } catch {
+        const fallback = `
+          $wallpaper: "";
+          $background: #1e1e1e;
+          $foreground: #d4d4d4;
+          $cursor: #d4d4d4;
+          $color0: #1e1e1e;
+          $color1: #f44747;
+          $color2: #6a9955;
+          $color3: #d7ba7d;
+          $color4: #569cd6;
+          $color5: #c586c0;
+          $color6: #4ec9b0;
+          $color7: #d4d4d4;
+          $color8: #808080;
+          $color9: #f44747;
+          $color10: #6a9955;
+          $color11: #d7ba7d;
+          $color12: #569cd6;
+          $color13: #c586c0;
+          $color14: #4ec9b0;
+          $color15: #d4d4d4;
+          `
+        await execAsync(`mkdir -p ${HOME}/.cache/wal`)
+        await execAsync(["bash", "-c", `echo "${fallback}" > ${walCache}`])
+      }
+
+      await execAsync(`ln -sf ${walCache} ${walLocal}`)
+    } catch (e) {
+      console.error("Failed to setup pywal colors symlink:", e)
+    }
+
     // Compile SCSS to CSS using the sass CLI
     await execAsync(`sass ${scss} ${css}`)
 
