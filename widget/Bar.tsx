@@ -1,16 +1,37 @@
 import app from "ags/gtk4/app"
 import { Astal, Gtk, Gdk } from "ags/gtk4"
-import { execAsync } from "ags/process"
-import { createPoll } from "ags/time"
+
+function Left() {
+  return (
+    <box $type="start" halign={Gtk.Align.START} cssClasses={["left-box"]}>
+      <label label="Left Widget Area" />
+    </box>
+  )
+}
+
+function Center() {
+  return (
+    <box $type="center" halign={Gtk.Align.CENTER} cssClasses={["center-box"]}>
+      <label label="Center Widget Area" />
+    </box>
+  )
+}
+
+function Right() {
+  return (
+    <box $type="end" halign={Gtk.Align.END} cssClasses={["right-box"]}>
+      <label label="Right Widget Area" />
+    </box>
+  )
+}
 
 export default function Bar(gdkmonitor: Gdk.Monitor) {
-  const time = createPoll("", 1000, "date")
   const { TOP, LEFT, RIGHT } = Astal.WindowAnchor
 
   return (
     <window
       visible
-      name="bar"
+      name={`bar-${gdkmonitor.get_display()?.get_name()}`}
       class="Bar"
       gdkmonitor={gdkmonitor}
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
@@ -18,21 +39,9 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
       application={app}
     >
       <centerbox cssName="centerbox">
-        <button
-          $type="start"
-          onClicked={() => execAsync("echo hello").then(console.log)}
-          hexpand
-          halign={Gtk.Align.CENTER}
-        >
-          <label label="Welcome to AGS!" />
-        </button>
-        <box $type="center" />
-        <menubutton $type="end" hexpand halign={Gtk.Align.CENTER}>
-          <label label={time} />
-          <popover>
-            <Gtk.Calendar />
-          </popover>
-        </menubutton>
+        <Left />
+        <Center />
+        <Right />
       </centerbox>
     </window>
   )

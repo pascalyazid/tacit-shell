@@ -11,6 +11,13 @@ window.Bar {
     background: $bg-color;
     border-radius: 10px;
     margin: 8px;
+    padding: 4px 12px;
+  }
+
+  .left-box,
+  .center-box,
+  .right-box {
+    padding: 0 8px;
   }
 
   button {
