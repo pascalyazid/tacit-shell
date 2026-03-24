@@ -1,10 +1,11 @@
 import app from "ags/gtk4/app"
 import { Astal, Gtk, Gdk } from "ags/gtk4"
+import Workspaces from "./Workspaces"
 
 function Left() {
   return (
     <box $type="start" halign={Gtk.Align.START} cssClasses={["left-box"]}>
-      <label label="Left Widget Area" />
+      <Workspaces />
     </box>
   )
 }
