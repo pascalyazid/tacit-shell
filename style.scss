@@ -73,4 +73,19 @@ window.Bar {
       }
     }
   }
+
+  .controls-container {
+    .control-btn {
+      padding: 2px 8px;
+      min-height: 24px;
+
+      image {
+        -gtk-icon-size: 16px;
+      }
+    }
+
+    .power-btn {
+      color: #ff5555; // Distinctive color for power button
+    }
+  }
 }

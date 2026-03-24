@@ -3,6 +3,7 @@ import { Astal, Gtk, Gdk } from "ags/gtk4"
 import Workspaces from "./Workspaces"
 import { Clock, SysTray } from "./System"
 import Media from "./Media"
+import Controls from "./Controls"
 
 function Left() {
   return (
@@ -28,8 +29,14 @@ function Center() {
 
 function Right() {
   return (
-    <box $type="end" halign={Gtk.Align.END} cssClasses={["right-box"]}>
+    <box
+      $type="end"
+      halign={Gtk.Align.END}
+      cssClasses={["right-box"]}
+      spacing={8}
+    >
       <SysTray />
+      <Controls />
     </box>
   )
 }
