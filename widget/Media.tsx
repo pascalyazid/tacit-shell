@@ -4,6 +4,7 @@ import { createBinding, With, onCleanup } from "ags"
 
 export default function Media() {
   const mpris = AstalMpris.Mpris.get_default()
+  let lastPlaying: string | null = null
 
   return (
     <box cssClasses={["media-container"]}>
@@ -18,31 +19,24 @@ export default function Media() {
             <box
               $={(box) => {
                 const updateVisibility = () => {
-                  let hasPlaying = false
-                  for (const player of players) {
-                    if (
-                      player.playback_status ===
-                      AstalMpris.PlaybackStatus.PLAYING
-                    ) {
-                      hasPlaying = true
-                      break
-                    }
+                  const activePlayer = players.find(
+                    (p) =>
+                      p.playback_status === AstalMpris.PlaybackStatus.PLAYING,
+                  )
+
+                  if (activePlayer) {
+                    lastPlaying = activePlayer.bus_name
                   }
 
-                  let first = true
+                  const targetPlayer =
+                    activePlayer ||
+                    players.find((p) => p.bus_name === lastPlaying) ||
+                    players[0]
+
                   let child = box.get_first_child()
                   for (const player of players) {
                     if (!child) break
-
-                    if (hasPlaying) {
-                      child.set_visible(
-                        player.playback_status ===
-                          AstalMpris.PlaybackStatus.PLAYING,
-                      )
-                    } else {
-                      child.set_visible(first)
-                      first = false
-                    }
+                    child.set_visible(player === targetPlayer)
                     child = child.get_next_sibling()
                   }
                 }
@@ -58,35 +52,98 @@ export default function Media() {
                   players.forEach((p, i) => {
                     try {
                       p.disconnect(connections[i])
-                    } catch (e) {}
+                    } catch {}
                   })
                 })
               }}
             >
-              {players.map((player) => (
-                <button
-                  cssClasses={["media-btn"]}
-                  onClicked={() =>
-                    console.log("Expand Media Controls - Phase 7")
-                  }
-                >
-                  <box spacing={8} valign={Gtk.Align.CENTER}>
-                    {/* Fallback to an icon if cover-art is empty */}
-                    <image
-                      cssClasses={["media-art"]}
-                      file={createBinding(player, "cover-art")}
-                      iconName="audio-x-generic-symbolic"
-                    />
-                    <label
-                      cssClasses={["media-title"]}
-                      label={createBinding(player, "title")}
-                      maxWidthChars={25}
-                      wrap={false}
-                      ellipsize={3} // Pango.EllipsizeMode.END
-                    />
-                  </box>
-                </button>
-              ))}
+              {players.map((player) => {
+                const playbackIcon = createBinding(
+                  player,
+                  "playback-status",
+                )((s: any) =>
+                  s === AstalMpris.PlaybackStatus.PLAYING
+                    ? "media-playback-pause-symbolic"
+                    : "media-playback-start-symbolic",
+                )
+
+                return (
+                  <menubutton cssClasses={["media-btn"]}>
+                    <box spacing={8} valign={Gtk.Align.CENTER}>
+                      {/* Fallback to an icon if cover-art is empty */}
+                      <image
+                        cssClasses={["media-art"]}
+                        file={createBinding(player, "cover-art")}
+                        iconName="audio-x-generic-symbolic"
+                      />
+                      <label
+                        cssClasses={["media-title"]}
+                        label={createBinding(player, "title")}
+                        maxWidthChars={25}
+                        wrap={false}
+                        ellipsize={3} // Pango.EllipsizeMode.END
+                      />
+                    </box>
+                    <popover>
+                      <box
+                        css="padding: 16px; min-width: 250px;"
+                        orientation={Gtk.Orientation.VERTICAL}
+                        spacing={16}
+                      >
+                        <box spacing={16}>
+                          <image
+                            file={createBinding(player, "cover-art")}
+                            iconName="audio-x-generic-symbolic"
+                            css="-gtk-icon-size: 64px; border-radius: 8px;"
+                          />
+                          <box
+                            orientation={Gtk.Orientation.VERTICAL}
+                            valign={Gtk.Align.CENTER}
+                          >
+                            <label
+                              label={createBinding(player, "title")}
+                              css="font-weight: bold; font-size: 1.1em;"
+                              halign={Gtk.Align.START}
+                              wrap={true}
+                              maxWidthChars={20}
+                            />
+                            <label
+                              label={createBinding(player, "artist")}
+                              css="opacity: 0.8;"
+                              halign={Gtk.Align.START}
+                              wrap={true}
+                              maxWidthChars={20}
+                            />
+                          </box>
+                        </box>
+                        <centerbox>
+                          <button
+                            $type="start"
+                            onClicked={() => player.previous()}
+                            css="border-radius: 100%; padding: 8px;"
+                          >
+                            <image iconName="media-skip-backward-symbolic" />
+                          </button>
+                          <button
+                            $type="center"
+                            onClicked={() => player.play_pause()}
+                            css="border-radius: 100%; padding: 8px; min-width: 40px;"
+                          >
+                            <image iconName={playbackIcon} />
+                          </button>
+                          <button
+                            $type="end"
+                            onClicked={() => player.next()}
+                            css="border-radius: 100%; padding: 8px;"
+                          >
+                            <image iconName="media-skip-forward-symbolic" />
+                          </button>
+                        </centerbox>
+                      </box>
+                    </popover>
+                  </menubutton>
+                )
+              })}
             </box>
           )
         }}

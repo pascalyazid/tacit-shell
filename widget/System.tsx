@@ -19,7 +19,9 @@ export function Clock() {
     <menubutton cssClasses={["clock-btn"]} halign={Gtk.Align.CENTER}>
       <label label={time} />
       <popover>
-        <Gtk.Calendar />
+        <box css="padding: 12px;">
+          <Gtk.Calendar />
+        </box>
       </popover>
     </menubutton>
   )

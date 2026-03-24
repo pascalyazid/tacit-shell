@@ -1,32 +1,29 @@
 import { Gtk } from "ags/gtk4"
+import app from "ags/gtk4/app"
+import QuickSettings from "./QuickSettings"
 
-export function SettingsButton() {
-  return (
-    <button
-      cssClasses={["control-btn", "settings-btn"]}
-      onClicked={() => console.log("Open Settings Menu - Phase 8")}
-    >
-      <image iconName="emblem-system-symbolic" />
-    </button>
-  )
-}
-
-export function PowerButton() {
+export function PowerButton({ gdkmonitor }: { gdkmonitor: any }) {
   return (
     <button
       cssClasses={["control-btn", "power-btn"]}
-      onClicked={() => console.log("Open Power Menu - Phase 7")}
+      onClicked={() =>
+        app.toggle_window(`power-menu-${gdkmonitor.get_connector()}`)
+      }
     >
       <image iconName="system-shutdown-symbolic" />
     </button>
   )
 }
 
-export default function Controls() {
+export default function Controls({ gdkmonitor }: { gdkmonitor: any }) {
   return (
-    <box cssClasses={["controls-container"]} spacing={4} valign={Gtk.Align.CENTER}>
-      <SettingsButton />
-      <PowerButton />
+    <box
+      cssClasses={["controls-container"]}
+      spacing={4}
+      valign={Gtk.Align.CENTER}
+    >
+      <QuickSettings />
+      <PowerButton gdkmonitor={gdkmonitor} />
     </box>
   )
 }

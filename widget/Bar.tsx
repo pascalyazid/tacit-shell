@@ -4,6 +4,7 @@ import Workspaces from "./Workspaces"
 import { Clock, SysTray } from "./System"
 import Media from "./Media"
 import Controls from "./Controls"
+import ThemeSwitcher from "./ThemeSwitcher"
 
 function Left() {
   return (
@@ -27,7 +28,7 @@ function Center() {
   )
 }
 
-function Right() {
+function Right({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
   return (
     <box
       $type="end"
@@ -35,8 +36,9 @@ function Right() {
       cssClasses={["right-box"]}
       spacing={8}
     >
+      <ThemeSwitcher />
       <SysTray />
-      <Controls />
+      <Controls gdkmonitor={gdkmonitor} />
     </box>
   )
 }
@@ -47,7 +49,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
   return (
     <window
       visible
-      name={`bar-${gdkmonitor.get_display()?.get_name()}`}
+      name={`bar-${gdkmonitor.get_connector()}`}
       class="Bar"
       gdkmonitor={gdkmonitor}
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
@@ -57,7 +59,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
       <centerbox cssName="centerbox">
         <Left />
         <Center />
-        <Right />
+        <Right gdkmonitor={gdkmonitor} />
       </centerbox>
     </window>
   )

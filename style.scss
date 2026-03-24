@@ -1,6 +1,7 @@
-// https://gitlab.gnome.org/GNOME/gtk/-/blob/gtk-3-24/gtk/theme/Adwaita/_colors-public.scss
-$fg-color: #{"@theme_fg_color"};
-$bg-color: #{"@theme_bg_color"};
+@use "../../.cache/wal/colors.scss" as wal;
+
+$fg-color: wal.$foreground;
+$bg-color: rgba(wal.$background, 0.8);
 
 window.Bar {
   background: transparent;
@@ -23,6 +24,7 @@ window.Bar {
   button {
     border-radius: 8px;
     margin: 2px;
+    transition: all 0.2s ease-in-out;
   }
 
   .workspaces {
@@ -34,8 +36,12 @@ window.Bar {
       background: transparent;
 
       &.active {
-        background: #{"@theme_selected_bg_color"};
-        color: #{"@theme_selected_fg_color"};
+        background: wal.$color2;
+        color: wal.$background;
+      }
+
+      &:hover:not(.active) {
+        background: rgba(wal.$color2, 0.2);
       }
     }
   }
@@ -49,6 +55,10 @@ window.Bar {
     padding: 0 8px;
     min-height: 24px;
 
+    &:hover {
+      background: rgba(wal.$foreground, 0.1);
+    }
+
     .media-art {
       border-radius: 4px;
       -gtk-icon-size: 32px;
@@ -56,7 +66,7 @@ window.Bar {
   }
 
   .system-tray {
-    background: rgba(150, 150, 150, 0.15); // Unified background for the tray
+    background: rgba(wal.$color8, 0.3); // Unified background for the tray
     border-radius: 8px;
     padding: 0 4px; // Reduced vertical padding
     margin: 2px;
@@ -68,24 +78,120 @@ window.Bar {
       border: none;
       box-shadow: none;
 
+      &:hover {
+        background: rgba(wal.$foreground, 0.1);
+        border-radius: 6px;
+      }
+
       image {
         -gtk-icon-size: 16px;
       }
     }
   }
 
-  .controls-container {
-    .control-btn {
-      padding: 2px 8px;
-      min-height: 24px;
+  .control-btn {
+    padding: 2px 8px;
+    min-height: 24px;
 
-      image {
-        -gtk-icon-size: 16px;
+    &:hover {
+      background: rgba(wal.$foreground, 0.1);
+    }
+
+    image {
+      -gtk-icon-size: 16px;
+    }
+  }
+
+  .controls-container {
+    .power-btn {
+      color: wal.$color1; // Distinctive color for power button
+    }
+  }
+}
+
+.wallpaper-btn {
+  padding: 0;
+  border-radius: 8px;
+  background: transparent;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background: rgba(wal.$foreground, 0.1);
+  }
+
+  picture {
+    border-radius: 8px;
+  }
+}
+
+window.PowerMenu {
+  background: transparent;
+
+  .power-menu-container {
+    background: $bg-color;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+
+    .power-menu-btn {
+      padding: 24px;
+      border-radius: 12px;
+      background: transparent;
+      min-width: 120px;
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        background: rgba(wal.$foreground, 0.1);
+      }
+
+      .power-menu-icon {
+        -gtk-icon-size: 48px;
+      }
+
+      .power-menu-label {
+        font-size: 1.2em;
+        font-weight: bold;
       }
     }
+  }
+}
 
-    .power-btn {
-      color: #ff5555; // Distinctive color for power button
+.quick-settings-menu {
+  padding: 12px;
+  min-width: 280px;
+
+  .qs-title {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 4px;
+    color: wal.$foreground;
+    opacity: 0.8;
+  }
+
+  .qs-item {
+    background: rgba(150, 150, 150, 0.1);
+    border-radius: 8px;
+    padding: 8px 12px;
+
+    .qs-icon {
+      -gtk-icon-size: 20px;
     }
+
+    .qs-icon-btn {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 4px;
+      border-radius: 100%;
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        background: rgba(wal.$foreground, 0.1);
+      }
+    }
+  }
+
+  slider {
+    transition: all 0.2s ease-in-out;
   }
 }
