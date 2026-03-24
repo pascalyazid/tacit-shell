@@ -10,8 +10,8 @@ window.Bar {
   > centerbox {
     background: $bg-color;
     border-radius: 10px;
-    margin: 8px;
-    padding: 4px 12px;
+    margin: 4px 8px; // Reduced vertical margin
+    padding: 0 12px; // Removed vertical padding
   }
 
   .left-box,
@@ -28,7 +28,7 @@ window.Bar {
   .workspaces {
     .workspace-btn {
       min-width: 24px;
-      min-height: 24px;
+      min-height: 24px; // Control height exactly here
       padding: 0 4px;
       border-radius: 6px;
       background: transparent;
@@ -36,6 +36,40 @@ window.Bar {
       &.active {
         background: #{"@theme_selected_bg_color"};
         color: #{"@theme_selected_fg_color"};
+      }
+    }
+  }
+
+  .clock-btn {
+    padding: 0 12px; // Reduced vertical padding
+    min-height: 24px;
+  }
+
+  .media-btn {
+    padding: 0 8px;
+    min-height: 24px;
+
+    .media-art {
+      border-radius: 4px;
+      -gtk-icon-size: 32px;
+    }
+  }
+
+  .system-tray {
+    background: rgba(150, 150, 150, 0.15); // Unified background for the tray
+    border-radius: 8px;
+    padding: 0 4px; // Reduced vertical padding
+    margin: 2px;
+
+    .tray-item {
+      padding: 2px 4px; // Reduced vertical padding
+      margin: 0;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+
+      image {
+        -gtk-icon-size: 16px;
       }
     }
   }

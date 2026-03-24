@@ -1,6 +1,8 @@
 import app from "ags/gtk4/app"
 import { Astal, Gtk, Gdk } from "ags/gtk4"
 import Workspaces from "./Workspaces"
+import { Clock, SysTray } from "./System"
+import Media from "./Media"
 
 function Left() {
   return (
@@ -12,8 +14,14 @@ function Left() {
 
 function Center() {
   return (
-    <box $type="center" halign={Gtk.Align.CENTER} cssClasses={["center-box"]}>
-      <label label="Center Widget Area" />
+    <box
+      $type="center"
+      halign={Gtk.Align.CENTER}
+      cssClasses={["center-box"]}
+      spacing={8}
+    >
+      <Media />
+      <Clock />
     </box>
   )
 }
@@ -21,7 +29,7 @@ function Center() {
 function Right() {
   return (
     <box $type="end" halign={Gtk.Align.END} cssClasses={["right-box"]}>
-      <label label="Right Widget Area" />
+      <SysTray />
     </box>
   )
 }
