@@ -2,7 +2,9 @@ import app from "ags/gtk4/app"
 import style from "./style.scss"
 import Bar from "./widget/Bar"
 import PowerMenu from "./widget/PowerMenu"
-import { restoreTheme } from "./theme"
+import { initThemeSync, restoreTheme } from "./theme"
+
+initThemeSync()
 
 app.start({
   css: style,

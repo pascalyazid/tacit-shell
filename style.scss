@@ -1,4 +1,4 @@
-@use "./colors.scss" as wal;
+@use "/tmp/ags-colors.scss" as wal;
 
 $fg-color: wal.$foreground;
 $bg-color: rgba(wal.$background, 0.8);
