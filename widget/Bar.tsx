@@ -1,7 +1,7 @@
 import app from "ags/gtk4/app"
 import { Astal, Gtk, Gdk } from "ags/gtk4"
 import Workspaces from "./Workspaces"
-import { Clock, SysTray } from "./System"
+import { Clock, SysTray, Battery } from "./System"
 import Media from "./Media"
 import Controls from "./Controls"
 import ThemeSwitcher from "./ThemeSwitcher"
@@ -38,6 +38,7 @@ function Right({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
     >
       <ThemeSwitcher />
       <SysTray />
+      <Battery />
       <Controls gdkmonitor={gdkmonitor} />
     </box>
   )
