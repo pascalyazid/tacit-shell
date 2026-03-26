@@ -28,7 +28,7 @@ paru -S ags dart-sass
 sudo pacman -S hyprpaper python-pywal16
 
 # Astal libraries (for system data bindings)
-paru -S astal-gjs astal-mpris astal-tray astal-network astal-bluetooth astal-wireplumber
+paru -S astal-gjs astal-mpris astal-tray astal-network astal-bluetooth astal-wireplumber libastal-battery-git
 ```
 
 ---
