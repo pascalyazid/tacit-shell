@@ -127,6 +127,13 @@ export async function setTheme(wallpaperPath: string) {
   try {
     // -q: quiet, -i: image, -n: skip setting wallpaper (hyprpaper does it)
     await execAsync(`wal -q -n -i "${wallpaperPath}"`)
+
+    // Add this line so hyprlock always knows the current wallpaper:
+    await execAsync([
+      "cp",
+      wallpaperPath,
+      `${HOME}/.cache/current_wallpaper.jpg`,
+    ])
   } catch (error) {
     console.error("Failed to generate colors with pywal:", error)
   }

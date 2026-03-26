@@ -3,6 +3,12 @@
 $fg-color: wal.$foreground;
 $bg-color: rgba(wal.$background, 0.8);
 
+// Unified sizing variables
+$btn-height: 30px;
+$btn-radius: 8px;
+$btn-margin: 4px 2px;
+$icon-size: 16px;
+
 window.Bar {
   background: transparent;
   color: $fg-color;
@@ -11,117 +17,129 @@ window.Bar {
   > centerbox {
     background: $bg-color;
     border-radius: 10px;
-    margin: 4px 8px; // Reduced vertical margin
-    padding: 0 12px; // Removed vertical padding
+    margin: 4px 8px;
+    padding: 0 8px;
   }
 
   .left-box,
   .center-box,
   .right-box {
-    padding: 0 8px;
+    padding: 0 4px;
   }
 
+  // Base button styling for absolute uniformity
   button {
-    border-radius: 8px;
-    margin: 2px;
+    border-radius: $btn-radius;
+    margin: $btn-margin;
+    min-height: $btn-height;
     transition: all 0.2s ease-in-out;
+    background: rgba(
+      150,
+      150,
+      150,
+      0.1
+    ); // Slight base background for all buttons
+    border: none;
+    box-shadow: none;
+
+    &:hover {
+      background: rgba(wal.$foreground, 0.15);
+    }
   }
 
   .workspaces {
     .workspace-btn {
-      min-width: 24px;
-      min-height: 24px; // Control height exactly here
-      padding: 0 4px;
-      border-radius: 6px;
-      background: transparent;
+      min-width: $btn-height; // Base square size
+      padding: 0;
+      border-radius: 100px; // Pill shape instead of blocky squares
+      background-color: transparent;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
       &.active {
-        background: wal.$color2;
+        min-width: 45px; // Horizontal expansion, slightly less wide
+        background-color: wal.$color2;
         color: wal.$background;
       }
 
       &:hover:not(.active) {
-        background: rgba(wal.$color2, 0.2);
+        background-color: rgba(wal.$color2, 0.2);
       }
     }
   }
 
   .clock-btn {
-    padding: 0 12px; // Reduced vertical padding
-    min-height: 24px;
+    padding: 0 12px;
   }
 
   .media-btn {
-    padding: 0 8px;
-    min-height: 24px;
-
-    &:hover {
-      background: rgba(wal.$foreground, 0.1);
-    }
+    padding: 0 12px;
 
     .media-art {
       border-radius: 4px;
-      -gtk-icon-size: 32px;
+      -gtk-icon-size: $icon-size;
     }
   }
 
   .system-tray {
-    background: rgba(wal.$color8, 0.3); // Unified background for the tray
-    border-radius: 8px;
-    padding: 0 4px; // Reduced vertical padding
-    margin: 2px;
+    background: transparent;
+    border-radius: $btn-radius;
+    padding: 0;
+    margin: 0;
 
     .tray-item {
-      //padding: 2px 4px; // Reduced vertical padding
-      margin: 0;
+      padding: 0;
+      min-width: $btn-height;
+      min-height: $btn-height;
+      margin: 0 2px;
       background: transparent;
-      border: none;
-      box-shadow: none;
+
+      button {
+        background: transparent;
+      }
 
       &:hover {
         background: rgba(wal.$foreground, 0.1);
-        border-radius: 6px;
+        border-radius: $btn-radius;
       }
 
       image {
-        -gtk-icon-size: 16px;
+        -gtk-icon-size: 20px;
       }
     }
   }
 
-  .control-btn {
-    padding: 2px 8px;
-    min-height: 24px;
-
-    &:hover {
-      background: rgba(wal.$foreground, 0.1);
-    }
-
+  // Icon-only control buttons (wallpaper, settings, power, etc)
+  .control-btn,
+  .wallpaper-btn,
+  .power-btn {
+    min-width: $btn-height;
+    padding: 0; // Square buttons should have 0 padding, width handles size
     image {
-      -gtk-icon-size: 16px;
+      -gtk-icon-size: $icon-size;
     }
   }
 
   .controls-container {
     .power-btn {
-      color: wal.$color1; // Distinctive color for power button
+      color: wal.$color1;
     }
   }
 }
 
 .wallpaper-btn {
-  padding: 0;
-  border-radius: 8px;
   background: transparent;
-  transition: all 0.2s ease-in-out;
-
-  &:hover {
-    background: rgba(wal.$foreground, 0.1);
-  }
 
   picture {
-    border-radius: 8px;
+    border-radius: $btn-radius;
   }
+}
+
+popover > contents {
+  background: $bg-color;
+  color: $fg-color;
+  border: 1px solid rgba(wal.$foreground, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 window.PowerMenu {
@@ -139,6 +157,8 @@ window.PowerMenu {
       background: transparent;
       min-width: 120px;
       transition: all 0.2s ease-in-out;
+      border: none;
+      box-shadow: none;
 
       &:hover {
         background: rgba(wal.$foreground, 0.1);
