@@ -64,6 +64,10 @@ Because this shell uses **Pywal**, you can easily inject the dynamically generat
 
 Whenever you change the wallpaper via the AGS bar, Pywal updates the color templates inside `~/.cache/wal/`. Here is how to apply them to other apps:
 
+### Manual Updates:
+
+If your application needs to be restartet to update its themes, place the needed commands in the update_script.sh. An example for the dunst notification daemon is already in there.
+
 ### Example 1: Kitty Terminal
 
 Kitty has built-in Pywal support. Pywal automatically generates a `.conf` file for it. Just add this single line anywhere in your `~/.config/kitty/kitty.conf`:

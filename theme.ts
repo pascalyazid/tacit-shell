@@ -164,4 +164,13 @@ export async function setTheme(wallpaperPath: string) {
   } catch (error) {
     console.error("Failed to recompile and apply AGS styles:", error)
   }
+
+  // 4. Run update script
+  try {
+    const agsDir = `${HOME}/.config/ags`
+    await execAsync(`${agsDir}/update_script.sh`)
+    console.log("Ran update script")
+  } catch (error) {
+    console.error("Failed to run update script:", error)
+  }
 }
