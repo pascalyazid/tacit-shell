@@ -22,13 +22,16 @@ To use this shell, you need to install AGS and the required backend libraries. S
 
 ```bash
 # Core AGS and Sass compiler for theming
-paru -S ags dart-sass
+yay -S ags dart-sass
 
 # Desktop environment dependencies
 sudo pacman -S hyprpaper python-pywal16
 
 # Astal libraries (for system data bindings)
-paru -S astal-gjs astal-mpris astal-tray astal-network astal-bluetooth astal-wireplumber libastal-battery-git
+yay -S astal-gjs astal-mpris astal-tray astal-network astal-bluetooth astal-wireplumber libastal-battery-git
+
+# Notification daemon
+yay -S dunst
 ```
 
 ---
