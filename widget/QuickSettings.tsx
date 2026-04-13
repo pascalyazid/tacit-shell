@@ -3,7 +3,7 @@ import AstalNetwork from "gi://AstalNetwork?version=0.1"
 import AstalBluetooth from "gi://AstalBluetooth?version=0.1"
 import AstalWp from "gi://AstalWp?version=0.1"
 import { createBinding } from "ags"
-import { execAsync, createSubprocess } from "ags/process"
+import { execAsync } from "ags/process"
 
 function NetworkItem() {
   const network = AstalNetwork.Network.get_default()
