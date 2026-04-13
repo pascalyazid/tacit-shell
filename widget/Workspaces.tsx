@@ -1,5 +1,5 @@
 import { execAsync, createSubprocess } from "ags/process"
-import GLib from "gi://GLib?version=2.0"
+import GLib from "gi://GLib"
 import { Gdk } from "ags/gtk4"
 
 const HIS = GLib.getenv("HYPRLAND_INSTANCE_SIGNATURE")

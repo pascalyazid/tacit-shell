@@ -11,9 +11,9 @@ const HOME = GLib.getenv("HOME") || ""
 const colorsPath = `${HOME}/.cache/wal/colors.scss`
 
 if (!GLib.file_test(colorsPath, GLib.FileTest.EXISTS)) {
-  console.log("No pywal colors found, generating default from pywal.png...")
+  console.log("No pywal colors found, generating default from pywal.jpg...")
   const agsDir = `${HOME}/.config/ags`
-  exec(`wal -q -n -i ${agsDir}/pywal.png`)
+  exec(`wal -q -n -i ${agsDir}/pywal.jpg`)
 }
 
 const scss = `${HOME}/.config/ags/style.scss`

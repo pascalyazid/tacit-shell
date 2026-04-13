@@ -1,7 +1,7 @@
 import { Gtk } from "ags/gtk4"
 
-import GdkPixbuf from "gi://GdkPixbuf?version=2.0"
-import Gdk from "gi://Gdk?version=4.0"
+import GdkPixbuf from "gi://GdkPixbuf"
+import Gdk from "gi://Gdk"
 import { getWallpapers, setTheme } from "../theme"
 
 // Global memory cache for textures, shared across all monitors!
