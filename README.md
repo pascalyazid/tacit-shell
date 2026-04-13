@@ -21,8 +21,8 @@ This shell features dynamic on-the-fly theming using **Pywal**, completely integ
 To use this shell, you need to install AGS and the required backend libraries. Since you are on CachyOS/Arch, you can install them via your package manager or AUR.
 
 ```bash
-# Core AGS and Sass compiler for theming
-yay -S ags dart-sass hyprmod-git
+# Core AGS and Sass compiler for theming, hyprmod for hyprland settings, notification daemon
+yay -S ags dart-sass hyprmod-git dunst
 
 # Desktop environment dependencies
 sudo pacman -S hyprpaper python-pywal16
@@ -30,8 +30,6 @@ sudo pacman -S hyprpaper python-pywal16
 # Astal libraries (for system data bindings)
 yay -S astal-gjs astal-mpris astal-tray astal-network astal-bluetooth astal-wireplumber libastal-battery-git
 
-# Notification daemon
-yay -S dunst
 ```
 
 ---
