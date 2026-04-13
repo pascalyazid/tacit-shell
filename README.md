@@ -22,7 +22,7 @@ To use this shell, you need to install AGS and the required backend libraries. S
 
 ```bash
 # Core AGS and Sass compiler for theming
-yay -S ags dart-sass
+yay -S ags dart-sass hyprmod-git
 
 # Desktop environment dependencies
 sudo pacman -S hyprpaper python-pywal16

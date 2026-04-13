@@ -3,6 +3,7 @@ import AstalNetwork from "gi://AstalNetwork?version=0.1"
 import AstalBluetooth from "gi://AstalBluetooth?version=0.1"
 import AstalWp from "gi://AstalWp?version=0.1"
 import { createBinding } from "ags"
+import { execAsync, createSubprocess } from "ags/process"
 
 function NetworkItem() {
   const network = AstalNetwork.Network.get_default()
@@ -126,6 +127,29 @@ export default function QuickSettings() {
             />
             <AudioSlider type="speaker" />
             <AudioSlider type="microphone" />
+          </box>
+          <box orientation={Gtk.Orientation.VERTICAL} spacing={8}>
+            <label
+              label="Tools"
+              cssClasses={["qs-title"]}
+              halign={Gtk.Align.START}
+            />
+            <button
+              cssClasses={["qs-item"]}
+              onClicked={() => execAsync(["hyprmod"])}
+            >
+              <box spacing={12} valign={Gtk.Align.CENTER}>
+                <image
+                  iconName="applications-system-symbolic"
+                  cssClasses={["qs-icon"]}
+                />
+                <label
+                  label="Hyprland Settings"
+                  halign={Gtk.Align.START}
+                  hexpand
+                />
+              </box>
+            </button>
           </box>
         </box>
       </popover>
