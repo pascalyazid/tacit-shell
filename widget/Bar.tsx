@@ -6,10 +6,10 @@ import Media from "./Media"
 import Controls from "./Controls"
 import ThemeSwitcher from "./ThemeSwitcher"
 
-function Left() {
+function Left({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
   return (
     <box $type="start" halign={Gtk.Align.START} cssClasses={["left-box"]}>
-      <Workspaces />
+      <Workspaces gdkmonitor={gdkmonitor} />
     </box>
   )
 }
@@ -58,7 +58,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
       application={app}
     >
       <centerbox cssName="centerbox">
-        <Left />
+        <Left gdkmonitor={gdkmonitor} />
         <Center />
         <Right gdkmonitor={gdkmonitor} />
       </centerbox>
