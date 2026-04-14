@@ -4,6 +4,8 @@ A fast, highly-customizable, and memory-optimized top bar for Hyprland, built wi
 
 This shell features dynamic theming using **Pywal**, completely integrating your wallpaper colors into the bar and the rest of your system.
 
+---
+
 ## ✨ Features
 
 - **Multi-Monitor Support**: Automatically instantiates a top bar and power menu overlay for every connected display.
