@@ -1,4 +1,6 @@
 {
+  "name": "qileshell",
+  "version": "0.1.0",
   "dependencies": {
     "ags": "*",
     "gnim": "*",
