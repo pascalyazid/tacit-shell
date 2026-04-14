@@ -1,6 +1,6 @@
 # AGS Bar for Hyprland
 
-A fast, highly-customizable, and memory-optimized top bar for Hyprland, built with [AGS (Aylur's GTK Shell)](https://aylur.github.io/ags-docs/) and GTK4.
+A fast, highly-customizable, and memory-optimized top bar for Hyprland, built with [AGS (Aylur's GTK Shell)](https://aylur.github.io/ags/) and GTK4.
 
 This shell features dynamic theming using **Pywal**, completely integrating your wallpaper colors into the bar and the rest of your system.
 
