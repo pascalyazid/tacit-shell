@@ -54,19 +54,19 @@ To make the bar start automatically when you launch Hyprland, add the following 
 exec-once = ags run
 ```
 
-_(Note: The shell is configured to automatically restore your last used wallpaper and Pywal theme on boot!)_
+_(Note: The shell is configured to automatically restore your last used wallpaper and Pywal theme on boot.)_
 
 ---
 
 ## 🎨 Applying the Theme Globally
 
-Because this shell uses **Pywal**, you can easily inject the dynamically generated colors into almost any other application on your system!
+Because this shell uses **Pywal**, you can easily inject the dynamically generated colors into almost any other application on your system.
 
 Whenever you change the wallpaper via the AGS bar, Pywal updates the color templates inside `~/.cache/wal/`. Here is how to apply them to other apps:
 
 ### Manual Updates:
 
-If your application needs to be restartet to update its themes, place the needed commands in the update_script.sh. An example for the dunst notification daemon is already in there.
+If your application needs to be restarted to update its themes, place the needed commands in the update_script.sh. An example for the dunst notification daemon is already in there.
 
 ### Example 1: Kitty Terminal
 
@@ -76,7 +76,7 @@ Kitty has built-in Pywal support. Pywal automatically generates a `.conf` file f
 include ~/.cache/wal/colors-kitty.conf
 ```
 
-_Next time you open Kitty, it will perfectly match your wallpaper!_
+_Next time you open Kitty, it will perfectly match your wallpaper._
 
 
 ### Example 2: Dunst (Notification Daemon)
