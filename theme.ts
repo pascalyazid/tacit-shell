@@ -126,7 +126,9 @@ export async function setTheme(wallpaperPath: string) {
   // 2. Generate colors with pywal16
   try {
     // -q: quiet, -i: image, -n: skip setting wallpaper (hyprpaper does it)
-    await execAsync(`wal -q -n -i "${wallpaperPath}"`)
+    await execAsync(
+      `wal --backend modern-colorthief -q -n -i "${wallpaperPath}"`,
+    )
 
     // Add this line so hyprlock always knows the current wallpaper:
     await execAsync([

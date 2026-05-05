@@ -55,19 +55,13 @@ window.Bar {
       background-color: transparent;
       transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
-      &.active-focused-monitor {
+      &.active {
         min-width: 45px; // Horizontal expansion, slightly less wide
         background-color: wal.$color2;
         color: wal.$background;
       }
 
-      &.active-unfocused-monitor {
-        min-width: 45px;
-        background-color: rgba(wal.$color4, 0.35);
-        color: wal.$foreground;
-      }
-
-      &:hover:not(.active-focused-monitor):not(.active-unfocused-monitor) {
+      &:hover:not(.active) {
         background-color: rgba(wal.$color2, 0.2);
       }
     }
