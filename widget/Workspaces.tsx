@@ -5,7 +5,11 @@ import GLib from "gi://GLib?version=2.0"
 const HIS = GLib.getenv("HYPRLAND_INSTANCE_SIGNATURE")
 const sock = `${GLib.getenv("XDG_RUNTIME_DIR")}/hypr/${HIS}/.socket2.sock`
 
-export default function Workspaces({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
+export default function Workspaces({
+  gdkmonitor,
+}: {
+  gdkmonitor: Gdk.Monitor
+}) {
   const monitorName = gdkmonitor.get_connector()
 
   // Listen to the Hyprland socket for instant workspace updates
