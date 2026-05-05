@@ -1,30 +1,41 @@
 import { execAsync, createSubprocess } from "ags/process"
+import { Gdk } from "ags/gtk4"
 import GLib from "gi://GLib?version=2.0"
 
 const HIS = GLib.getenv("HYPRLAND_INSTANCE_SIGNATURE")
 const sock = `${GLib.getenv("XDG_RUNTIME_DIR")}/hypr/${HIS}/.socket2.sock`
 
-export default function Workspaces() {
+export default function Workspaces({
+  gdkmonitor,
+}: {
+  gdkmonitor: Gdk.Monitor
+}) {
+  const monitorName = gdkmonitor.get_connector()
+
   // Listen to the Hyprland socket for instant workspace updates
   const activeWs = createSubprocess(
     1,
     [
       "sh",
       "-c",
-      `hyprctl activeworkspace -j | grep '"id":' | head -1 | awk '{print $2}' | tr -d ','; nc -U ${sock}`,
+      `
+MON="${monitorName}"
+print_ws() {
+  hyprctl monitors -j | python3 -c "import json, sys; mon = sys.argv[1]; data = json.load(sys.stdin); print(next((m.get('activeWorkspace', {}).get('id', 0) for m in data if m.get('name') == mon), 0))" "$MON"
+}
+
+print_ws
+nc -U ${sock} | while IFS= read -r line; do
+  case "$line" in
+    focusedmon*|workspace*|workspacev2*|moveworkspace*|moveworkspacev2*|createworkspace*|destroyworkspace*)
+      print_ws
+      ;;
+  esac
+done
+`,
     ],
     (out, prev) => {
-      // Multi-monitor focus changes emit focusedmon without workspace events.
-      const focusedMonMatch = out.match(/(?:^|\n)focusedmon>>[^,\n]+,(\d+)/)
-      if (focusedMonMatch) return parseInt(focusedMonMatch[1])
-
-      const match = out.match(/(?:^|\n)workspace>>(\d+)/)
-      if (match) return parseInt(match[1])
-
-      const matchV2 = out.match(/(?:^|\n)workspacev2>>(\d+),/)
-      if (matchV2) return parseInt(matchV2[1])
-
-      const num = parseInt(out)
+      const num = parseInt(out.trim())
       if (!isNaN(num) && num > 0) return num
 
       return prev

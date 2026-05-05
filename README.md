@@ -38,7 +38,7 @@ yay -S astal-gjs astal-mpris astal-tray astal-network astal-bluetooth astal-wire
 ## 🚀 Setup & Installation
 
 1. **Clone/Place the Config:** Ensure this repository is placed at `~/.config/ags`.
-2. **Wallpaper Directory:** Create a folder at `~/wallpapers` where you can place your  `.jpg` or `.png` wallpapers in. The theme switcher looks here by default.
+2. **Wallpaper Directory:** Create a folder at `~/wallpapers` where you can place your `.jpg` or `.png` wallpapers in. The theme switcher looks here by default.
    ```bash
    mkdir -p ~/wallpapers
    ```
@@ -80,7 +80,6 @@ include ~/.cache/wal/colors-kitty.conf
 
 _Next time you open Kitty, it will perfectly match your wallpaper._
 
-
 ### Example 2: Dunst (Notification Daemon)
 
 Pywal doesn't generate a theme for every application, hence you have to define some templates yourself in `~/.config/wal/templates`.
@@ -110,6 +109,7 @@ In this case we will create a template for Dunst:
     frame_color = "{color9}"
     timeout = 0
 ```
+
 After switching the wallpaper, pywal will generate a theme with the exactly same name in `~/.cache/wal`
 You can create a symlink so dunst will always have the current theme:
 
@@ -117,11 +117,13 @@ You can create a symlink so dunst will always have the current theme:
 ln -sf ~/.cache/wal/dunstrc ~/.config/dunst/dunstrc
 ```
 
-Because dunst doesn't apply the theme while it's running, we added 
+Because dunst doesn't apply the theme while it's running, we added
+
 ```bash
 killall dunst
 dunst &
 ```
+
 in the `update_script.sh` Bash-Script which runs every time the wallpaper is switched.
 You can add your own commands in there if needed.
 
