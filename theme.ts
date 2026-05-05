@@ -87,12 +87,9 @@ export async function restoreTheme() {
     const out = await execAsync(["cat", `${HOME}/.cache/wal/wal`])
     const wallpaperPath = out.trim()
     if (wallpaperPath) {
-      console.log(`Restoring theme for wallpaper: ${wallpaperPath}`)
       await setTheme(wallpaperPath)
     }
-  } catch {
-    console.log("No previous wallpaper found to restore.")
-  }
+  } catch {}
 }
 
 /**
@@ -100,8 +97,6 @@ export async function restoreTheme() {
  * and reload the AGS theme.
  */
 export async function setTheme(wallpaperPath: string) {
-  console.log(`Setting theme for wallpaper: ${wallpaperPath}`)
-
   // 1. Set wallpaper with hyprpaper
   try {
     // Preload the wallpaper first
@@ -161,8 +156,6 @@ export async function setTheme(wallpaperPath: string) {
     // Reset any previously applied CSS and apply the new one
     app.reset_css()
     app.apply_css(css)
-
-    console.log("AGS theme successfully updated!")
   } catch (error) {
     console.error("Failed to recompile and apply AGS styles:", error)
   }
@@ -171,7 +164,6 @@ export async function setTheme(wallpaperPath: string) {
   try {
     const agsDir = `${HOME}/.config/ags`
     await execAsync(`${agsDir}/update_script.sh`)
-    console.log("Ran update script")
   } catch (error) {
     console.error("Failed to run update script:", error)
   }
