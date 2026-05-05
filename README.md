@@ -30,7 +30,7 @@ To use this shell, you need to install AGS and the required backend libraries. S
 
 ```bash
 # Core AGS and Sass compiler for theming, Hyprmod for Hyprland settings, Dunst notification daemon
-yay -S ags dart-sass hyprmod-git dunst
+yay -S aylurs-gtk-shell-git dart-sass hyprmod dunst
 
 # Wallpaper dependencies
 yay -S hyprpaper python-pywal16
