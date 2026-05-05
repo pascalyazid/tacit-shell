@@ -1,5 +1,5 @@
 import { Gtk } from "ags/gtk4"
-import AstalMpris from "gi://AstalMpris"
+import AstalMpris from "gi://AstalMpris?version=0.1"
 import { createBinding, With, onCleanup } from "ags"
 
 export default function Media() {

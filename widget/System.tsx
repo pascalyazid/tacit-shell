@@ -1,7 +1,7 @@
 import { Gtk } from "ags/gtk4"
 import { createPoll } from "ags/time"
-import AstalTray from "gi://AstalTray"
-import AstalBattery from "gi://AstalBattery"
+import AstalTray from "gi://AstalTray?version=0.1"
+import AstalBattery from "gi://AstalBattery?version=0.1"
 import { createBinding, For } from "ags"
 
 export function Clock() {

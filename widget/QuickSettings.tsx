@@ -1,9 +1,9 @@
 import { Gtk } from "ags/gtk4"
-import AstalNetwork from "gi://AstalNetwork"
-import AstalBluetooth from "gi://AstalBluetooth"
-import Wp from "gi://AstalWp"
+import AstalNetwork from "gi://AstalNetwork?version=0.1"
+import AstalBluetooth from "gi://AstalBluetooth?version=0.1"
+import AstalWp from "gi://AstalWp?version=0.1"
 import { createBinding } from "ags"
-import { execAsync } from "ags/process"
+import { execAsync, createSubprocess } from "ags/process"
 
 function NetworkItem() {
   const network = AstalNetwork.Network.get_default()
@@ -69,7 +69,7 @@ function BluetoothItem() {
 }
 
 function AudioSlider({ type }: { type: "speaker" | "microphone" }) {
-  const wp = Wp.get_default()
+  const wp = AstalWp.get_default()
   const audio = wp?.audio
 
   if (!audio) return <box />
@@ -120,11 +120,13 @@ export default function QuickSettings() {
             <BluetoothItem />
           </box>
           <box orientation={Gtk.Orientation.VERTICAL} spacing={8}>
-            <label
-              label="Audio"
+            <button
               cssClasses={["qs-title"]}
               halign={Gtk.Align.START}
-            />
+              onClicked={() => execAsync(["/usr/bin/easyeffects"])}
+            >
+              <label label="Audio" halign={Gtk.Align.START} />
+            </button>
             <AudioSlider type="speaker" />
             <AudioSlider type="microphone" />
           </box>
