@@ -44,9 +44,10 @@ yay -S astal-gjs astal-mpris astal-tray astal-network astal-bluetooth astal-wire
 ## 🚀 Setup & Installation
 
 1. **Clone/Place the Config:** Ensure this repository is placed at `~/.config/ags`.
-2. **Wallpaper Directory:** Create a folder at `~/wallpapers` where you can place your `.jpg` or `.png` wallpapers in. The theme switcher looks here by default.
+2. **Wallpaper Directory:** Create a folder at `~/wallpapers` where you can place your `.jpg` or `.png` wallpapers in. The theme switcher looks here by default. Enable the hyprpaper service.
    ```bash
    mkdir -p ~/wallpapers
+   systemctl --user enable --now hyprpaper
    ```
 3. **Initial Run:** Start the bar manually to ensure everything is working.
    ```bash
