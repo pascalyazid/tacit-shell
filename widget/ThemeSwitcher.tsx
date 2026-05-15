@@ -4,12 +4,10 @@ import GdkPixbuf from "gi://GdkPixbuf?version=2.0"
 import Gdk from "gi://Gdk?version=4.0"
 import { getWallpapers, setTheme } from "../theme"
 
-// Global memory cache for textures, shared across all monitors!
 const textureCache = new Map<string, Gdk.Texture>()
 
 export default function ThemeSwitcher() {
   let flowBox: Gtk.FlowBox
-  // LOCAL to each monitor's instance, so they all build properly!
   let lastLoadedWps = ""
 
   const loadWallpapers = async (force = false) => {
@@ -18,15 +16,11 @@ export default function ThemeSwitcher() {
     const currentWpsStr = wps.join(",")
 
     if (!force && currentWpsStr === lastLoadedWps) {
-      // No changes, no need to rebuild the UI
       return
     }
     lastLoadedWps = currentWpsStr
-
-    // Clear existing children
     ;(flowBox as any).remove_all()
 
-    // Add new ones using native GTK components
     for (const wp of wps) {
       if (!textureCache.has(wp)) {
         try {
@@ -71,7 +65,6 @@ export default function ThemeSwitcher() {
         $={(p) => {
           p.connect("notify::visible", () => {
             if (p.get_visible()) {
-              // Pass false so it only rebuilds if files changed
               loadWallpapers(false)
             }
           })

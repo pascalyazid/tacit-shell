@@ -1,6 +1,125 @@
 import { Gtk } from "ags/gtk4"
 import AstalMpris from "gi://AstalMpris?version=0.1"
+import GLib from "gi://GLib?version=2.0"
 import { createBinding, With, onCleanup } from "ags"
+
+function VinylRecord({ player, size }: { player: any; size: number }) {
+  const border = Math.max(2, Math.round(size * 0.04))
+
+  return (
+    <box
+      halign={Gtk.Align.CENTER}
+      valign={Gtk.Align.CENTER}
+      $={(box) => {
+        let angle = 0
+        let timerId: number | null = null
+
+        const rotProvider = new Gtk.CssProvider()
+        box
+          .get_style_context()
+          .add_provider(rotProvider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
+
+        const applyAngle = () => {
+          rotProvider.load_from_string(`* { transform: rotate(${angle}deg); }`)
+        }
+
+        const startSpin = () => {
+          if (timerId !== null) return
+          timerId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 33, () => {
+            angle = (angle + 2) % 360
+            applyAngle()
+            return true
+          })
+        }
+
+        const stopSpin = () => {
+          if (timerId !== null) {
+            GLib.source_remove(timerId)
+            timerId = null
+          }
+        }
+
+        const frame = new Gtk.Frame()
+        const provider = new Gtk.CssProvider()
+        provider.load_from_string(`
+          frame {
+            border-radius: 50%;
+            border: ${border}px solid rgba(20, 20, 20, 0.9);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+            padding: 0;
+          }
+        `)
+        frame
+          .get_style_context()
+          .add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
+        frame.halign = Gtk.Align.CENTER
+        frame.valign = Gtk.Align.CENTER
+
+        const img = new Gtk.Image()
+        img.icon_name = "audio-x-generic-symbolic"
+        img.pixel_size = size
+
+        const holeSize = Math.round(size * 0.1)
+        const hole = new Gtk.Box({
+          halign: Gtk.Align.CENTER,
+          valign: Gtk.Align.CENTER,
+        })
+        const holeProvider = new Gtk.CssProvider()
+        holeProvider.load_from_string(`
+          box {
+            background: rgba(0, 0, 0, 0.85);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            min-width: ${holeSize}px;
+            min-height: ${holeSize}px;
+          }
+        `)
+        hole
+          .get_style_context()
+          .add_provider(holeProvider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
+
+        const overlay = new Gtk.Overlay()
+        overlay.child = img
+        frame.child = overlay
+        box.append(frame)
+
+        const updateArt = () => {
+          const art = player.cover_art
+          if (art) {
+            img.set_from_file(art)
+          } else {
+            img.set_from_icon_name("audio-x-generic-symbolic")
+          }
+        }
+        updateArt()
+
+        if (player.playback_status === AstalMpris.PlaybackStatus.PLAYING) {
+          startSpin()
+        }
+        applyAngle()
+
+        const artConn = player.connect("notify::cover-art", updateArt)
+        const statusConn = player.connect("notify::playback-status", () => {
+          if (player.playback_status === AstalMpris.PlaybackStatus.PLAYING) {
+            startSpin()
+          } else {
+            stopSpin()
+          }
+        })
+
+        onCleanup(() => {
+          stopSpin()
+          try {
+            player.disconnect(artConn)
+          } catch {}
+          try {
+            player.disconnect(statusConn)
+          } catch {}
+        })
+      }}
+    />
+  )
+}
 
 export default function Media() {
   const mpris = AstalMpris.Mpris.get_default()
@@ -14,7 +133,6 @@ export default function Media() {
             return <box />
           }
 
-          // We render all players but manage their visibility manually.
           return (
             <box
               $={(box) => {
@@ -47,7 +165,6 @@ export default function Media() {
 
                 updateVisibility()
 
-                // Cleanup connections when this component is unmounted
                 onCleanup(() => {
                   players.forEach((p, i) => {
                     try {
@@ -69,76 +186,83 @@ export default function Media() {
 
                 return (
                   <menubutton cssClasses={["media-btn"]}>
+                    {/* --- Bar: small vinyl + title --- */}
                     <box spacing={8} valign={Gtk.Align.CENTER}>
-                      {/* Fallback to an icon if cover-art is empty */}
-                      <image
-                        cssClasses={["media-art"]}
-                        file={createBinding(player, "cover-art")}
-                        iconName="audio-x-generic-symbolic"
-                      />
+                      <VinylRecord player={player} size={26} />
                       <label
                         cssClasses={["media-title"]}
                         label={createBinding(player, "title")}
-                        maxWidthChars={25}
+                        maxWidthChars={20}
                         wrap={false}
-                        ellipsize={3} // Pango.EllipsizeMode.END
+                        ellipsize={3}
                       />
                     </box>
+
+                    {/* --- Popover: expanded controls --- */}
                     <popover>
                       <box
-                        css="padding: 16px; min-width: 250px;"
+                        css="padding: 20px; min-width: 300px;"
                         orientation={Gtk.Orientation.VERTICAL}
                         spacing={16}
                       >
                         <box spacing={16}>
-                          <image
-                            file={createBinding(player, "cover-art")}
-                            iconName="audio-x-generic-symbolic"
-                            css="-gtk-icon-size: 64px; border-radius: 8px;"
-                          />
+                          <VinylRecord player={player} size={96} />
                           <box
                             orientation={Gtk.Orientation.VERTICAL}
                             valign={Gtk.Align.CENTER}
+                            spacing={4}
+                            hexpand={true}
                           >
                             <label
                               label={createBinding(player, "title")}
-                              css="font-weight: bold; font-size: 1.1em;"
+                              css="font-weight: bold; font-size: 1.15em;"
                               halign={Gtk.Align.START}
                               wrap={true}
-                              maxWidthChars={20}
+                              maxWidthChars={22}
                             />
                             <label
                               label={createBinding(player, "artist")}
-                              css="opacity: 0.8;"
+                              css="opacity: 0.7; font-size: 0.95em;"
                               halign={Gtk.Align.START}
                               wrap={true}
-                              maxWidthChars={20}
+                              maxWidthChars={22}
                             />
                           </box>
                         </box>
-                        <centerbox>
+
+                        <box
+                          halign={Gtk.Align.CENTER}
+                          spacing={12}
+                          cssClasses={["media-controls"]}
+                        >
                           <button
-                            $type="start"
+                            cssClasses={["media-ctrl-btn", "skip-btn"]}
                             onClicked={() => player.previous()}
-                            css="border-radius: 100%; padding: 8px;"
                           >
-                            <image iconName="media-skip-backward-symbolic" />
+                            <image
+                              iconName="media-skip-backward-symbolic"
+                              css="-gtk-icon-size: 18px;"
+                            />
                           </button>
                           <button
-                            $type="center"
+                            cssClasses={["media-ctrl-btn", "play-pause-btn"]}
                             onClicked={() => player.play_pause()}
-                            css="border-radius: 100%; padding: 8px; min-width: 40px;"
                           >
-                            <image iconName={playbackIcon} />
+                            <image
+                              iconName={playbackIcon}
+                              css="-gtk-icon-size: 22px;"
+                            />
                           </button>
                           <button
-                            $type="end"
+                            cssClasses={["media-ctrl-btn", "skip-btn"]}
                             onClicked={() => player.next()}
-                            css="border-radius: 100%; padding: 8px;"
                           >
-                            <image iconName="media-skip-forward-symbolic" />
+                            <image
+                              iconName="media-skip-forward-symbolic"
+                              css="-gtk-icon-size: 18px;"
+                            />
                           </button>
-                        </centerbox>
+                        </box>
                       </box>
                     </popover>
                   </menubutton>
