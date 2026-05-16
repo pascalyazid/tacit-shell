@@ -30,14 +30,12 @@ This shell features dynamic theming using **Pywal**, completely integrating your
 To use this shell, you need to install AGS and the required backend libraries. Since you are most probably using Arch, you can install them via your package manager or AUR.
 
 ```bash
-# Core AGS and Sass compiler for theming, Hyprmod for Hyprland settings, Dunst notification daemon
-yay -S aylurs-gtk-shell-git dart-sass hyprmod dunst
+# Astal libraries, core AGS and Sass compiler for theming, Hyprmod for Hyprland settings, Dunst notification daemon
+paru -S libastal-meta aylurs-gtk-shell-git dart-sass hyprmod dunst
 
 # Wallpaper dependencies
 yay -S hyprpaper python-pywal16
 
-# Astal libraries (for system data bindings)
-yay -S astal-gjs astal-mpris astal-tray astal-network astal-bluetooth astal-wireplumber libastal-battery-git
 ```
 
 ---
